@@ -42,3 +42,9 @@ pub(crate) const BALL_COLOR: Color = color_u8!(240, 255, 0, 255);
 pub(crate) const BALL_FRICTION_COEFFICIENT: f32 = 0.035;
 pub(crate) const GRAVITY: f32 = 9.81; // m/s^2
 pub(crate) const BALL_ROLLING_DECELERATION: f32 = BALL_FRICTION_COEFFICIENT * GRAVITY; // m/s^2
+
+pub(crate) const MIN_SPEED: f32 = 6.0; // m/s
+pub(crate) const MAX_SPEED: f32 = 9.5; // m/s
+
+pub(crate) const MIN_ACCELERATION: f32 = 2.5; // m/s^2
+pub(crate) const MAX_ACCELERATION: f32 = 6.0; // m/s^2
