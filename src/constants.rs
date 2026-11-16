@@ -29,3 +29,6 @@ pub(crate) const MARKING_THICKNESS: f32 = 0.12 * PIXELS_PER_METER; // pixels
 
 pub(crate) const CENTER_CIRCLE_RADIUS: f32 = 9.15; // meters
 pub(crate) const CENTER_SPOT_RADIUS: f32 = 0.15; // meters
+
+pub(crate) const BALL_RADIUS: f32 = 0.11; // meters
+pub(crate) const BALL_MASS: f32 = 0.43; // kg

@@ -1,3 +1,4 @@
+mod ball;
 mod constants;
 mod coords;
 mod drawing;
