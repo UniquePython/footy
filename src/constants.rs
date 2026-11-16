@@ -35,5 +35,10 @@ pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
 pub(crate) const BALL_RENDER_RADIUS: f32 = 5.0; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
 
+pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);
 pub(crate) const PITCH_COLOR: Color = color_u8!(126, 175, 52, 255);
 pub(crate) const BALL_COLOR: Color = color_u8!(240, 255, 0, 255);
+
+pub(crate) const BALL_FRICTION_COEFFICIENT: f32 = 0.035;
+pub(crate) const GRAVITY: f32 = 9.81; // m/s^2
+pub(crate) const BALL_ROLLING_DECELERATION: f32 = BALL_FRICTION_COEFFICIENT * GRAVITY; // m/s^2
