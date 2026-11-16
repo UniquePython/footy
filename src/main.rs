@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use footy::{WINDOW_HEIGHT, WINDOW_WIDTH, draw_pitch};
+use footy::{WINDOW_HEIGHT, WINDOW_WIDTH, draw};
 
 fn window_config() -> Conf {
     Conf {
@@ -16,7 +16,7 @@ fn window_config() -> Conf {
 async fn main() {
     loop {
         clear_background(BLACK);
-        draw_pitch();
+        draw();
         next_frame().await;
     }
 }
