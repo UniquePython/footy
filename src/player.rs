@@ -1,7 +1,7 @@
 use macroquad::math::Vec2;
 
 use crate::attributes::Attributes;
-use crate::constants::PLAYER_RADIUS;
+use crate::constants::PLAYER_PHYSICS_RADIUS;
 
 pub(crate) struct Player {
     pub(crate) position: Vec2,
@@ -15,7 +15,7 @@ impl Player {
         Self {
             position,
             velocity: Vec2::ZERO,
-            radius: PLAYER_RADIUS,
+            radius: PLAYER_PHYSICS_RADIUS,
             attributes,
         }
     }
@@ -30,5 +30,7 @@ impl Player {
         } else {
             self.velocity += diff.normalize_or_zero() * delta;
         }
+
+        self.position += self.velocity * dt;
     }
 }
