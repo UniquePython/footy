@@ -1,4 +1,3 @@
-use macroquad::input::{KeyCode, is_key_down};
 use macroquad::math::Vec2;
 use macroquad::time::get_frame_time;
 use macroquad::window::{clear_background, next_frame};
@@ -6,28 +5,9 @@ use macroquad::window::{clear_background, next_frame};
 use crate::attributes::Attributes;
 use crate::ball::Ball;
 use crate::constants::BG_COLOR;
+use crate::controller::HumanController;
 use crate::drawing::draw;
 use crate::player::Player;
-
-// Temporary
-fn read_movement_input() -> Vec2 {
-    let mut direction = Vec2::ZERO;
-
-    if is_key_down(KeyCode::Up) {
-        direction.y += 1.0;
-    }
-    if is_key_down(KeyCode::Down) {
-        direction.y -= 1.0;
-    }
-    if is_key_down(KeyCode::Right) {
-        direction.x += 1.0;
-    }
-    if is_key_down(KeyCode::Left) {
-        direction.x -= 1.0;
-    }
-
-    direction.normalize_or_zero()
-}
 
 pub async fn run() {
     // let mut ball = Ball {
@@ -42,13 +22,14 @@ pub async fn run() {
             pace: 80,
             acceleration: 80,
         },
+        Box::new(HumanController),
     ); // stub data
 
     loop {
         let dt = get_frame_time();
 
         ball.update(dt);
-        player.update(read_movement_input(), dt);
+        player.update(dt);
 
         clear_background(BG_COLOR);
         draw(&ball, &player);

@@ -1,6 +1,7 @@
 mod attributes;
 mod ball;
 mod constants;
+mod controller;
 mod coords;
 mod drawing;
 mod game;
