@@ -1,6 +1,6 @@
 use macroquad::math::Vec2;
 
-use crate::constants::{BALL_MASS, BALL_RADIUS};
+use crate::constants::{BALL_MASS, BALL_PHYSICS_RADIUS};
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct Ball {
@@ -15,7 +15,7 @@ impl Ball {
         Self {
             position,
             velocity: Vec2::ZERO,
-            radius: BALL_RADIUS,
+            radius: BALL_PHYSICS_RADIUS,
             mass: BALL_MASS,
         }
     }

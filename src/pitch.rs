@@ -1,13 +1,12 @@
 use macroquad::color::Color;
 use macroquad::math::vec2;
-use macroquad::{
-    color_u8,
-    shapes::{draw_circle, draw_circle_lines, draw_line, draw_rectangle, draw_rectangle_lines},
+use macroquad::shapes::{
+    draw_circle, draw_circle_lines, draw_line, draw_rectangle, draw_rectangle_lines,
 };
 
 use crate::constants::{
     CENTER_CIRCLE_RADIUS, CENTER_SPOT_RADIUS, HALF_PITCH_HEIGHT, HALF_PITCH_WIDTH, MARKING_COLOR,
-    MARKING_THICKNESS, PITCH_HEIGHT, PITCH_WIDTH, PIXELS_PER_METER,
+    MARKING_THICKNESS, PITCH_COLOR, PITCH_HEIGHT, PITCH_WIDTH, PIXELS_PER_METER,
 };
 
 use crate::coords::world_to_screen;
@@ -50,7 +49,7 @@ const PITCH: Element = Element::Rectangle {
     y: HALF_PITCH_HEIGHT,
     w: PITCH_WIDTH,
     h: PITCH_HEIGHT,
-    color: color_u8!(126, 175, 52, 255),
+    color: PITCH_COLOR,
 };
 
 const BOUNDARY: Element = Element::RectangleOutline {

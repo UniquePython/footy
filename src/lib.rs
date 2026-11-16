@@ -2,7 +2,8 @@ mod ball;
 mod constants;
 mod coords;
 mod drawing;
+mod game;
 mod pitch;
 
 pub use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
-pub use drawing::draw;
+pub use game::run;

@@ -1,4 +1,5 @@
 use macroquad::color::{Color, WHITE};
+use macroquad::prelude::color_u8;
 
 pub const WINDOW_WIDTH: f32 = 1380.0; // pixels
 pub const WINDOW_HEIGHT: f32 = 960.0; // pixels
@@ -30,5 +31,9 @@ pub(crate) const MARKING_THICKNESS: f32 = 0.12 * PIXELS_PER_METER; // pixels
 pub(crate) const CENTER_CIRCLE_RADIUS: f32 = 9.15; // meters
 pub(crate) const CENTER_SPOT_RADIUS: f32 = 0.15; // meters
 
-pub(crate) const BALL_RADIUS: f32 = 0.11; // meters
+pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
+pub(crate) const BALL_RENDER_RADIUS: f32 = 5.0; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
+
+pub(crate) const PITCH_COLOR: Color = color_u8!(126, 175, 52, 255);
+pub(crate) const BALL_COLOR: Color = color_u8!(240, 255, 0, 255);
