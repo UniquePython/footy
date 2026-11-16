@@ -1,5 +1,5 @@
-pub(crate) const WINDOW_WIDTH: f32 = 1380.0; // pixels
-pub(crate) const WINDOW_HEIGHT: f32 = 960.0; // pixels
+pub const WINDOW_WIDTH: f32 = 1380.0; // pixels
+pub const WINDOW_HEIGHT: f32 = 960.0; // pixels
 
 pub(crate) const PADDING_EACH_SIDE: f32 = 60.0; // pixels
 pub(crate) const PADDING_ALONG_AXIS: f32 = 2.0 * PADDING_EACH_SIDE; // pixels
