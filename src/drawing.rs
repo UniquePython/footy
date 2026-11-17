@@ -7,9 +7,11 @@ use crate::ball::Ball;
 use crate::constants::{BALL_COLOR, BALL_RENDER_RADIUS, PLAYER_RENDER_RADIUS};
 use crate::coords::world_to_screen;
 use crate::player::Player;
+use crate::stands::draw_stands;
 
 pub(crate) fn draw(ball: &Ball, player: &Player) {
     draw_pitch();
+    draw_stands();
     draw_ball(ball);
     draw_player(player);
 }

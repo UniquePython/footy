@@ -2,8 +2,9 @@ use macroquad::math::{Circle, Vec2, vec2};
 
 use crate::ball::Ball;
 use crate::constants::{
-    BALL_WALL_RESTITUTION, PLAYER_BALL_RESTITUTION, PLAYER_WALL_RESTITUTION,
-    WINDOW_HALF_HEIGHT_METERS, WINDOW_HALF_WIDTH_METERS,
+    BALL_WALL_RESTITUTION, COLLISION_BOUNDARY_HEIGHT, COLLISION_BOUNDARY_WIDTH,
+    PLAYER_BALL_RESTITUTION, PLAYER_WALL_RESTITUTION, WINDOW_HALF_HEIGHT_METERS,
+    WINDOW_HALF_WIDTH_METERS,
 };
 use crate::player::Player;
 
@@ -164,7 +165,7 @@ pub(crate) fn collide_ball_wall(ball: &mut Ball) {
     let x = bounce_component(
         ball.position.x,
         ball.velocity.x,
-        WINDOW_HALF_WIDTH_METERS,
+        COLLISION_BOUNDARY_WIDTH,
         ball.radius,
         BALL_WALL_RESTITUTION,
     );
@@ -172,7 +173,7 @@ pub(crate) fn collide_ball_wall(ball: &mut Ball) {
     let y = bounce_component(
         ball.position.y,
         ball.velocity.y,
-        WINDOW_HALF_HEIGHT_METERS,
+        COLLISION_BOUNDARY_HEIGHT,
         ball.radius,
         BALL_WALL_RESTITUTION,
     );
@@ -185,7 +186,7 @@ pub(crate) fn collide_player_wall(player: &mut Player) {
     let x = bounce_component(
         player.position.x,
         player.velocity.x,
-        WINDOW_HALF_WIDTH_METERS,
+        COLLISION_BOUNDARY_WIDTH,
         player.radius,
         PLAYER_WALL_RESTITUTION,
     );
@@ -193,7 +194,7 @@ pub(crate) fn collide_player_wall(player: &mut Player) {
     let y = bounce_component(
         player.position.y,
         player.velocity.y,
-        WINDOW_HALF_HEIGHT_METERS,
+        COLLISION_BOUNDARY_HEIGHT,
         player.radius,
         PLAYER_WALL_RESTITUTION,
     );

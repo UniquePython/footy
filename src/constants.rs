@@ -1,20 +1,10 @@
 use macroquad::color::{Color, WHITE};
 use macroquad::prelude::color_u8;
 
-pub const WINDOW_WIDTH: f32 = 1380.0; // pixels
-pub const WINDOW_HEIGHT: f32 = 960.0; // pixels
-
-pub(crate) const PADDING_EACH_SIDE: f32 = 60.0; // pixels
-pub(crate) const PADDING_ALONG_AXIS: f32 = 2.0 * PADDING_EACH_SIDE; // pixels
-
-pub(crate) const PITCH_DRAWING_WIDTH: f32 = WINDOW_WIDTH - PADDING_ALONG_AXIS; // pixels
-pub(crate) const PITCH_DRAWING_HEIGHT: f32 = WINDOW_HEIGHT - PADDING_ALONG_AXIS; // pixels
-
-pub(crate) const WINDOW_CENTER_X: f32 = WINDOW_WIDTH / 2.0; // pixels
-pub(crate) const WINDOW_CENTER_Y: f32 = WINDOW_HEIGHT / 2.0; // pixels
-
-pub(crate) const WINDOW_HALF_WIDTH_METERS: f32 = WINDOW_CENTER_X / PIXELS_PER_METER; // meters
-pub(crate) const WINDOW_HALF_HEIGHT_METERS: f32 = WINDOW_CENTER_Y / PIXELS_PER_METER; // meters
+pub(crate) const PADDING_SIDELINE: f32 = 136.5; // pixels
+pub(crate) const PADDING_GOAL_END: f32 = 60.0; // pixels
+pub(crate) const PADDING_ALONG_X_AXIS: f32 = 2.0 * PADDING_GOAL_END; // pixels
+pub(crate) const PADDING_ALONG_Y_AXIS: f32 = 2.0 * PADDING_SIDELINE; // pixels
 
 pub(crate) const PITCH_WIDTH: f32 = 105.0; // meters
 pub(crate) const PITCH_HEIGHT: f32 = 70.0; // meters
@@ -22,11 +12,45 @@ pub(crate) const PITCH_HEIGHT: f32 = 70.0; // meters
 pub(crate) const HALF_PITCH_WIDTH: f32 = PITCH_WIDTH / 2.0; // meters
 pub(crate) const HALF_PITCH_HEIGHT: f32 = PITCH_HEIGHT / 2.0; // meters
 
-const HORIZONTAL_PIXELS_PER_METER: f32 = PITCH_DRAWING_WIDTH / PITCH_WIDTH; // pixels / meter
-const VERTICAL_PIXELS_PER_METER: f32 = PITCH_DRAWING_HEIGHT / PITCH_HEIGHT; // pixels / meter
-const _: () = assert!(HORIZONTAL_PIXELS_PER_METER == VERTICAL_PIXELS_PER_METER);
-// pixels / meter (horizontal/vertical doesn't matter; assert gurantees both are same)
-pub(crate) const PIXELS_PER_METER: f32 = HORIZONTAL_PIXELS_PER_METER;
+pub(crate) const PIXELS_PER_METER: f32 = 10.5;
+
+pub const WINDOW_WIDTH: f32 = (PITCH_WIDTH * PIXELS_PER_METER) + PADDING_ALONG_X_AXIS; // pixels
+pub const WINDOW_HEIGHT: f32 = (PITCH_HEIGHT * PIXELS_PER_METER) + PADDING_ALONG_Y_AXIS; // pixels
+
+pub(crate) const PITCH_DRAWING_WIDTH: f32 = WINDOW_WIDTH - PADDING_ALONG_X_AXIS; // pixels
+pub(crate) const PITCH_DRAWING_HEIGHT: f32 = WINDOW_HEIGHT - PADDING_ALONG_Y_AXIS; // pixels
+
+const CHECK_HORIZONTAL_PIXELS_PER_METER: f32 = PITCH_DRAWING_WIDTH / PITCH_WIDTH;
+const CHECK_VERTICAL_PIXELS_PER_METER: f32 = PITCH_DRAWING_HEIGHT / PITCH_HEIGHT;
+const _: () = assert!(CHECK_HORIZONTAL_PIXELS_PER_METER == PIXELS_PER_METER);
+const _: () = assert!(CHECK_VERTICAL_PIXELS_PER_METER == PIXELS_PER_METER);
+
+pub(crate) const WINDOW_CENTER_X: f32 = WINDOW_WIDTH / 2.0; // pixels
+pub(crate) const WINDOW_CENTER_Y: f32 = WINDOW_HEIGHT / 2.0; // pixels
+
+pub(crate) const WINDOW_HALF_WIDTH_METERS: f32 = WINDOW_CENTER_X / PIXELS_PER_METER; // meters
+pub(crate) const WINDOW_HALF_HEIGHT_METERS: f32 = WINDOW_CENTER_Y / PIXELS_PER_METER; // meters
+
+pub(crate) const STAND_GAP: f32 = 5.0; // meters
+pub(crate) const STAND_DEPTH: f32 = (PADDING_SIDELINE / PIXELS_PER_METER) - STAND_GAP; // meters
+
+pub(crate) const SEAT_PITCH: f32 = 0.4; // meters, center-to-center spacing
+pub(crate) const SEAT_SIZE: f32 = 0.3; // meters, drawn size of each seat
+pub(crate) const STAND_BG_COLOR: Color = color_u8!(75, 60, 60, 255);
+pub(crate) const STAND_ROW_COUNT: usize = 4;
+pub(crate) const ROW_DEPTH: f32 = STAND_DEPTH / STAND_ROW_COUNT as f32;
+pub(crate) const SEATS_PER_ROW_DEPTH: usize = (ROW_DEPTH / SEAT_PITCH).floor() as usize;
+pub(crate) const SEAT_COLUMNS: usize =
+    ((2.0 * WINDOW_HALF_WIDTH_METERS) / SEAT_PITCH).floor() as usize;
+pub(crate) const STAND_ROW_COLOR: &[Color; STAND_ROW_COUNT] = &[
+    color_u8!(225, 15, 15, 255),
+    color_u8!(195, 30, 30, 255),
+    color_u8!(165, 45, 45, 255),
+    color_u8!(135, 60, 60, 255),
+];
+
+pub(crate) const COLLISION_BOUNDARY_WIDTH: f32 = WINDOW_HALF_WIDTH_METERS; // meters
+pub(crate) const COLLISION_BOUNDARY_HEIGHT: f32 = HALF_PITCH_HEIGHT + STAND_GAP; // meters
 
 pub(crate) const MARKING_COLOR: Color = WHITE;
 pub(crate) const MARKING_THICKNESS: f32 = 0.12 * PIXELS_PER_METER; // pixels
