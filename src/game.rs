@@ -7,6 +7,7 @@ use crate::ball::Ball;
 use crate::constants::BG_COLOR;
 use crate::controller::HumanController;
 use crate::drawing::draw;
+use crate::environment::Environment;
 use crate::physics_simulator::PhysicsSimulator;
 use crate::player::Player;
 
@@ -22,7 +23,8 @@ pub async fn run() {
         Box::new(HumanController),
     ); // stub data
 
-    let mut simulation = PhysicsSimulator::new(ball, player);
+    let environment = Environment::standard();
+    let mut simulation = PhysicsSimulator::new(ball, player, environment);
 
     loop {
         let dt = get_frame_time();

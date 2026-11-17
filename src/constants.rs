@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 use macroquad::color::{Color, WHITE};
 use macroquad::prelude::color_u8;
 
@@ -72,12 +74,14 @@ pub(crate) const PENALTY_ARC_SWEEP: f32 = 2.0 * PENALTY_ARC_HALF_ANGLE; // degre
 pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
 pub(crate) const BALL_RENDER_RADIUS: f32 = 1.0 * BALL_PHYSICS_RADIUS * PIXELS_PER_METER; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
+pub(crate) const BALL_DIAMETER: f32 = 2.0 * BALL_PHYSICS_RADIUS; // meters
+pub(crate) const BALL_CROSS_SECTION_AREA: f32 = PI * BALL_PHYSICS_RADIUS * BALL_PHYSICS_RADIUS; // m^2
 
 pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);
 pub(crate) const PITCH_COLOR: Color = color_u8!(126, 175, 52, 255);
 pub(crate) const BALL_COLOR: Color = color_u8!(240, 255, 0, 255);
 
-pub(crate) const BALL_FRICTION_COEFFICIENT: f32 = 0.035;
+pub(crate) const BALL_FRICTION_COEFFICIENT: f32 = 0.08;
 pub(crate) const GRAVITY: f32 = 9.81; // m/s^2
 pub(crate) const BALL_ROLLING_DECELERATION: f32 = BALL_FRICTION_COEFFICIENT * GRAVITY; // m/s^2
 
@@ -97,3 +101,22 @@ pub(crate) const PLAYER_RENDER_RADIUS: f32 =
 pub(crate) const PLAYER_WALL_RESTITUTION: f32 = 0.3;
 pub(crate) const BALL_WALL_RESTITUTION: f32 = 0.85; // FIFA rigid-surface bounce spec (0.82–0.88 range)
 pub(crate) const PLAYER_BALL_RESTITUTION: f32 = 0.75; // approximates passive ball-to-body impact research
+
+// Drag crisis: Cd falls from the subcritical to the supercritical value as Reynolds number
+// rises through the transition. Approximate values for a football; exact numbers vary by ball.
+pub(crate) const CD_SUBCRITICAL: f32 = 0.45;
+pub(crate) const CD_SUPERCRITICAL: f32 = 0.20;
+pub(crate) const RE_CRISIS_START: f32 = 1.5e5;
+pub(crate) const RE_CRISIS_END: f32 = 3.5e5;
+
+// Atmosphere (International Standard Atmosphere, valid in the troposphere, < 11 km)
+pub(crate) const DEFAULT_SEA_LEVEL_TEMPERATURE: f32 = 288.15; // kelvin (15 C)
+pub(crate) const DEFAULT_SEA_LEVEL_PRESSURE: f32 = 101_325.0; // pascals
+pub(crate) const TEMPERATURE_LAPSE_RATE: f32 = 0.0065; // K per meter of altitude
+pub(crate) const AIR_GAS_CONSTANT: f32 = 287.053; // J / (kg * K), specific gas constant of dry air
+pub(crate) const BAROMETRIC_EXPONENT: f32 = GRAVITY / (AIR_GAS_CONSTANT * TEMPERATURE_LAPSE_RATE); // dimensionless
+
+// Sutherland's law for dynamic viscosity of air
+pub(crate) const SUTHERLAND_REFERENCE_VISCOSITY: f32 = 1.716e-5; // Pa * s, at the reference temperature
+pub(crate) const SUTHERLAND_REFERENCE_TEMPERATURE: f32 = 273.15; // kelvin
+pub(crate) const SUTHERLAND_CONSTANT: f32 = 110.4; // kelvin

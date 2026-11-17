@@ -1,6 +1,8 @@
 use macroquad::math::Vec2;
 
+use crate::aerodynamics::drag_acceleration;
 use crate::constants::{BALL_MASS, BALL_PHYSICS_RADIUS, BALL_ROLLING_DECELERATION};
+use crate::environment::Environment;
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct Ball {
@@ -20,21 +22,21 @@ impl Ball {
         }
     }
 
-    pub(crate) fn update(&mut self, dt: f32) {
+    pub(crate) fn update(&mut self, dt: f32, env: &Environment) {
         if self.velocity == Vec2::ZERO {
             return;
         }
 
-        // calculate retardation
-        let friction_dir = -self.velocity.normalize_or_zero();
-        let retardation = friction_dir * BALL_ROLLING_DECELERATION;
+        // Air drag acts on the velocity relative to the air
+        let drag = drag_acceleration(self.velocity - env.wind, env);
+        self.velocity += drag * dt;
 
+        // Rolling friction opposes ground-relative velocity and can only stop the ball,
+        // never reverse it
         let old_velocity = self.velocity;
+        let friction_dir = -self.velocity.normalize_or_zero();
+        self.velocity += friction_dir * BALL_ROLLING_DECELERATION * dt;
 
-        // semi-implicit euler
-        self.velocity += retardation * dt;
-
-        // check for ball starting to reverse instead of just stopping and staying still
         if self.velocity.dot(old_velocity) < 0.0 {
             self.velocity = Vec2::ZERO;
         }

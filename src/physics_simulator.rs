@@ -5,19 +5,22 @@ use crate::constants::{
     BALL_WALL_RESTITUTION, COLLISION_BOUNDARY_HEIGHT, COLLISION_BOUNDARY_WIDTH,
     PLAYER_BALL_RESTITUTION, PLAYER_WALL_RESTITUTION,
 };
+use crate::environment::Environment;
 use crate::player::Player;
 
 pub(crate) struct PhysicsSimulator {
     ball: Ball,
     player: Player,
+    environment: Environment,
     locked_normal: Option<Vec2>,
 }
 
 impl PhysicsSimulator {
-    pub(crate) fn new(ball: Ball, player: Player) -> Self {
+    pub(crate) fn new(ball: Ball, player: Player, environment: Environment) -> Self {
         Self {
             ball,
             player,
+            environment,
             locked_normal: None,
         }
     }
@@ -34,7 +37,7 @@ impl PhysicsSimulator {
         let old_ball_position = self.ball.position;
         let old_player_position = self.player.position;
 
-        self.ball.update(dt);
+        self.ball.update(dt, &self.environment);
         self.player.update(dt);
 
         self.resolve_ball_player_sweep(old_ball_position, old_player_position, dt);
