@@ -70,7 +70,7 @@ pub(crate) const PENALTY_ARC_HALF_ANGLE: f32 = 53.0518; // degrees, derived from
 pub(crate) const PENALTY_ARC_SWEEP: f32 = 2.0 * PENALTY_ARC_HALF_ANGLE; // degrees
 
 pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
-pub(crate) const BALL_RENDER_RADIUS: f32 = 3.5; // pixels
+pub(crate) const BALL_RENDER_RADIUS: f32 = 1.0 * BALL_PHYSICS_RADIUS * PIXELS_PER_METER; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
 
 pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);

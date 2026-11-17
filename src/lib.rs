@@ -1,11 +1,11 @@
 mod attributes;
 mod ball;
-mod collision;
 mod constants;
 mod controller;
 mod coords;
 mod drawing;
 mod game;
+mod physics_simulator;
 mod pitch;
 mod player;
 mod stands;
