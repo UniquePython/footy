@@ -4,7 +4,7 @@ use macroquad::window::{clear_background, next_frame};
 
 use crate::attributes::Attributes;
 use crate::ball::Ball;
-use crate::camera::Camera;
+use crate::camera::{Camera, Subject};
 use crate::constants::{BG_COLOR, CAMERA_INITIAL_ALTITUDE};
 use crate::controller::HumanController;
 use crate::drawing::draw;
@@ -28,12 +28,26 @@ pub async fn run() {
     let environment = Environment::standard();
     let mut simulation = PhysicsSimulator::new(ball, player, environment);
 
-    let camera = Camera::new(Vec2::ZERO, CAMERA_INITIAL_ALTITUDE);
+    let mut camera = Camera::new(simulation.ball().position, CAMERA_INITIAL_ALTITUDE);
 
     loop {
         let dt = get_frame_time();
 
         simulation.step(dt);
+
+        let ball = simulation.ball();
+        let player = simulation.player();
+        camera.update(
+            dt,
+            Subject {
+                position: ball.position,
+                velocity: ball.velocity,
+            },
+            Subject {
+                position: player.position,
+                velocity: player.velocity,
+            },
+        );
 
         clear_background(BG_COLOR);
 
