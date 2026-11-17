@@ -1,3 +1,4 @@
+mod action;
 mod aerodynamics;
 mod attributes;
 mod ball;
@@ -7,6 +8,7 @@ mod coords;
 mod drawing;
 mod environment;
 mod game;
+mod input;
 mod physics_simulator;
 mod pitch;
 mod player;

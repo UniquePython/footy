@@ -8,6 +8,7 @@ use crate::constants::BG_COLOR;
 use crate::controller::HumanController;
 use crate::drawing::draw;
 use crate::environment::Environment;
+use crate::input::Bindings;
 use crate::physics_simulator::PhysicsSimulator;
 use crate::player::Player;
 
@@ -20,7 +21,7 @@ pub async fn run() {
             acceleration: 80,
             mass: 75.0,
         },
-        Box::new(HumanController),
+        Box::new(HumanController::new(Bindings::standard())),
     ); // stub data
 
     let environment = Environment::standard();
