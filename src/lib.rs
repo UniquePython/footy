@@ -14,5 +14,5 @@ mod pitch;
 mod player;
 mod stands;
 
-pub use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
+pub use constants::{DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH};
 pub use game::run;
