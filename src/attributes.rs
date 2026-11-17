@@ -4,6 +4,7 @@ use crate::constants::{MAX_ACCELERATION, MAX_SPEED, MIN_ACCELERATION, MIN_SPEED}
 pub(crate) struct Attributes {
     pub(crate) pace: u8,         // 0-99
     pub(crate) acceleration: u8, // 0-99
+    pub(crate) mass: f32,        // kg
 }
 
 impl Attributes {

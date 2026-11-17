@@ -1,5 +1,6 @@
 mod attributes;
 mod ball;
+mod collision;
 mod constants;
 mod controller;
 mod coords;

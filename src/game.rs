@@ -4,6 +4,7 @@ use macroquad::window::{clear_background, next_frame};
 
 use crate::attributes::Attributes;
 use crate::ball::Ball;
+use crate::collision::collide_ball_player;
 use crate::constants::BG_COLOR;
 use crate::controller::HumanController;
 use crate::drawing::draw;
@@ -21,6 +22,7 @@ pub async fn run() {
         Attributes {
             pace: 80,
             acceleration: 80,
+            mass: 75.0,
         },
         Box::new(HumanController),
     ); // stub data
@@ -30,6 +32,8 @@ pub async fn run() {
 
         ball.update(dt);
         player.update(dt);
+
+        collide_ball_player(&mut ball, &mut player);
 
         clear_background(BG_COLOR);
         draw(&ball, &player);
