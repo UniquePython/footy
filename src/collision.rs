@@ -105,12 +105,33 @@ fn resolve_ball_player_position(ball: &mut Ball, player: &mut Player, normal: Ve
     player.position = resolved.1;
 }
 
+fn safe_normal(p1: Vec2, v1: Vec2, p2: Vec2, v2: Vec2) -> Vec2 {
+    let position_normal = (p1 - p2).normalize_or_zero();
+
+    if position_normal != Vec2::ZERO {
+        return position_normal;
+    }
+
+    let velocity_normal = (v1 - v2).normalize_or_zero();
+
+    if velocity_normal != Vec2::ZERO {
+        return velocity_normal;
+    }
+
+    Vec2::X // arbitrary fallback
+}
+
 pub(crate) fn collide_ball_player(ball: &mut Ball, player: &mut Player) {
     if !is_ball_player_colliding(ball, player) {
         return;
     }
 
-    let normal = (ball.position - player.position).normalize_or_zero();
+    let normal = safe_normal(
+        ball.position,
+        ball.velocity,
+        player.position,
+        player.velocity,
+    );
 
     resolve_ball_player_velocity(ball, player, normal);
     resolve_ball_player_position(ball, player, normal);
