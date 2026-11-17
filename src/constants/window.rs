@@ -24,7 +24,4 @@ const _: () = assert!(CHECK_VERTICAL_PIXELS_PER_METER == PIXELS_PER_METER);
 pub(crate) const WINDOW_CENTER_X: f32 = WINDOW_WIDTH / 2.0; // pixels
 pub(crate) const WINDOW_CENTER_Y: f32 = WINDOW_HEIGHT / 2.0; // pixels
 
-pub(crate) const WINDOW_HALF_WIDTH_METERS: f32 = WINDOW_CENTER_X / PIXELS_PER_METER; // meters
-pub(crate) const WINDOW_HALF_HEIGHT_METERS: f32 = WINDOW_CENTER_Y / PIXELS_PER_METER; // meters
-
 pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);
