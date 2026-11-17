@@ -32,7 +32,7 @@ pub(crate) const CENTER_CIRCLE_RADIUS: f32 = 9.15; // meters
 pub(crate) const CENTER_SPOT_RADIUS: f32 = 0.15; // meters
 
 pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
-pub(crate) const BALL_RENDER_RADIUS: f32 = 5.0; // pixels
+pub(crate) const BALL_RENDER_RADIUS: f32 = 3.5; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
 
 pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);
@@ -50,4 +50,8 @@ pub(crate) const MIN_ACCELERATION: f32 = 2.5; // m/s^2
 pub(crate) const MAX_ACCELERATION: f32 = 6.0; // m/s^2
 
 pub(crate) const PLAYER_PHYSICS_RADIUS: f32 = 0.3; // meters
-pub(crate) const PLAYER_RENDER_RADIUS: f32 = 6.5; // pixels
+
+const PLAYER_TO_BALL_PHYSICS_RADIUS_RATIO: f32 = PLAYER_PHYSICS_RADIUS / BALL_PHYSICS_RADIUS;
+
+pub(crate) const PLAYER_RENDER_RADIUS: f32 =
+    BALL_RENDER_RADIUS * PLAYER_TO_BALL_PHYSICS_RADIUS_RATIO; // pixels
