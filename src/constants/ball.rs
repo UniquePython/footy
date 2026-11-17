@@ -4,10 +4,8 @@ use macroquad::color::Color;
 use macroquad::prelude::color_u8;
 
 use super::physics::GRAVITY;
-use super::window::PIXELS_PER_METER;
 
 pub(crate) const BALL_PHYSICS_RADIUS: f32 = 0.11; // meters
-pub(crate) const BALL_RENDER_RADIUS: f32 = 1.0 * BALL_PHYSICS_RADIUS * PIXELS_PER_METER; // pixels
 pub(crate) const BALL_MASS: f32 = 0.43; // kg
 pub(crate) const BALL_COLOR: Color = color_u8!(240, 255, 0, 255);
 

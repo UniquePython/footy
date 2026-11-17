@@ -1,8 +1,6 @@
 use macroquad::color::{Color, WHITE};
 use macroquad::prelude::color_u8;
 
-use super::window::PIXELS_PER_METER;
-
 pub(crate) const PITCH_WIDTH: f32 = 105.0; // meters
 pub(crate) const PITCH_HEIGHT: f32 = 70.0; // meters
 
@@ -25,4 +23,4 @@ pub(crate) const PENALTY_ARC_SWEEP: f32 = 2.0 * PENALTY_ARC_HALF_ANGLE; // degre
 
 pub(crate) const PITCH_COLOR: Color = color_u8!(126, 175, 52, 255);
 pub(crate) const MARKING_COLOR: Color = WHITE;
-pub(crate) const MARKING_THICKNESS: f32 = 0.12 * PIXELS_PER_METER; // pixels
+pub(crate) const MARKING_THICKNESS: f32 = 0.12; // meters

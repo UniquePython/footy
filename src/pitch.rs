@@ -1,15 +1,15 @@
 use macroquad::color::Color;
-use macroquad::math::vec2;
-use macroquad::shapes::{draw_arc, draw_circle, draw_circle_lines, draw_line, draw_rectangle};
+use macroquad::math::{Vec2, vec2};
+use macroquad::shapes::{draw_arc, draw_circle, draw_line, draw_poly_lines, draw_rectangle};
 
 use crate::constants::{
     CENTER_CIRCLE_RADIUS, CORNER_ARC_RADIUS, GOAL_AREA_HEIGHT, GOAL_AREA_WIDTH, HALF_PITCH_HEIGHT,
     HALF_PITCH_WIDTH, MARKING_COLOR, MARKING_THICKNESS, PENALTY_ARC_HALF_ANGLE, PENALTY_ARC_RADIUS,
     PENALTY_ARC_SWEEP, PENALTY_AREA_HEIGHT, PENALTY_AREA_WIDTH, PENALTY_SPOT_DISTANCE, PITCH_COLOR,
-    PITCH_HEIGHT, PITCH_WIDTH, PIXELS_PER_METER, SPOT_RADIUS,
+    PITCH_HEIGHT, PITCH_WIDTH, SPOT_RADIUS,
 };
 
-use crate::coords::world_to_screen;
+const CURVE_SIDES: u8 = 255; // segments per full circle; macroquad's default of 30 is visibly polygonal when zoomed in
 
 #[derive(Debug, Clone, Copy)]
 enum Element {
@@ -129,7 +129,7 @@ const TOP_LEFT_CORNER_ARC: Element = Element::Arc {
     x: -HALF_PITCH_WIDTH,
     y: HALF_PITCH_HEIGHT,
     r: CORNER_ARC_RADIUS,
-    rotation: 0.0,
+    rotation: 270.0,
     sweep: 90.0,
 };
 
@@ -137,7 +137,7 @@ const TOP_RIGHT_CORNER_ARC: Element = Element::Arc {
     x: HALF_PITCH_WIDTH,
     y: HALF_PITCH_HEIGHT,
     r: CORNER_ARC_RADIUS,
-    rotation: 90.0,
+    rotation: 180.0,
     sweep: 90.0,
 };
 
@@ -145,7 +145,7 @@ const BOTTOM_RIGHT_CORNER_ARC: Element = Element::Arc {
     x: HALF_PITCH_WIDTH,
     y: -HALF_PITCH_HEIGHT,
     r: CORNER_ARC_RADIUS,
-    rotation: 180.0,
+    rotation: 90.0,
     sweep: 90.0,
 };
 
@@ -153,7 +153,7 @@ const BOTTOM_LEFT_CORNER_ARC: Element = Element::Arc {
     x: -HALF_PITCH_WIDTH,
     y: -HALF_PITCH_HEIGHT,
     r: CORNER_ARC_RADIUS,
-    rotation: 270.0,
+    rotation: 0.0,
     sweep: 90.0,
 };
 
@@ -193,83 +193,36 @@ const PITCH_ELEMENTS: &[Element] = &[
     LEFT_PENALTY_ARC,
 ];
 
+fn draw_marking(from: Vec2, to: Vec2) {
+    draw_line(from.x, from.y, to.x, to.y, MARKING_THICKNESS, MARKING_COLOR);
+}
+
 pub fn draw_pitch() {
     for element in PITCH_ELEMENTS {
         match *element {
             Element::Rectangle { x, y, w, h, color } => {
-                let screen = world_to_screen(vec2(x, y));
-                draw_rectangle(
-                    screen.x,
-                    screen.y,
-                    w * PIXELS_PER_METER,
-                    h * PIXELS_PER_METER,
-                    color,
-                )
+                // `y` is the top edge, but draw_rectangle wants the bottom-left corner in a Y-up world
+                draw_rectangle(x, y - h, w, h, color);
             }
             Element::RectangleOutline { x, y, w, h } => {
-                let top_left = world_to_screen(vec2(x, y));
-                let top_right = world_to_screen(vec2(x + w, y));
-                let bottom_right = world_to_screen(vec2(x + w, y - h));
-                let bottom_left = world_to_screen(vec2(x, y - h));
+                let top_left = vec2(x, y);
+                let top_right = vec2(x + w, y);
+                let bottom_right = vec2(x + w, y - h);
+                let bottom_left = vec2(x, y - h);
 
-                draw_line(
-                    top_left.x,
-                    top_left.y,
-                    top_right.x,
-                    top_right.y,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                );
-                draw_line(
-                    top_right.x,
-                    top_right.y,
-                    bottom_right.x,
-                    bottom_right.y,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                );
-                draw_line(
-                    bottom_right.x,
-                    bottom_right.y,
-                    bottom_left.x,
-                    bottom_left.y,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                );
-                draw_line(
-                    bottom_left.x,
-                    bottom_left.y,
-                    top_left.x,
-                    top_left.y,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                );
+                draw_marking(top_left, top_right);
+                draw_marking(top_right, bottom_right);
+                draw_marking(bottom_right, bottom_left);
+                draw_marking(bottom_left, top_left);
             }
             Element::Line { x1, y1, x2, y2 } => {
-                let screen1 = world_to_screen(vec2(x1, y1));
-                let screen2 = world_to_screen(vec2(x2, y2));
-                draw_line(
-                    screen1.x,
-                    screen1.y,
-                    screen2.x,
-                    screen2.y,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                )
+                draw_marking(vec2(x1, y1), vec2(x2, y2));
             }
             Element::Circle { x, y, r } => {
-                let screen = world_to_screen(vec2(x, y));
-                draw_circle(screen.x, screen.y, r * PIXELS_PER_METER, MARKING_COLOR)
+                draw_circle(x, y, r, MARKING_COLOR);
             }
             Element::CircleOutline { x, y, r } => {
-                let screen = world_to_screen(vec2(x, y));
-                draw_circle_lines(
-                    screen.x,
-                    screen.y,
-                    r * PIXELS_PER_METER,
-                    MARKING_THICKNESS,
-                    MARKING_COLOR,
-                )
+                draw_poly_lines(x, y, CURVE_SIDES, r, 0.0, MARKING_THICKNESS, MARKING_COLOR);
             }
             Element::Arc {
                 x,
@@ -278,17 +231,16 @@ pub fn draw_pitch() {
                 rotation,
                 sweep,
             } => {
-                let screen = world_to_screen(vec2(x, y));
                 draw_arc(
-                    screen.x,
-                    screen.y,
-                    32,
-                    r * PIXELS_PER_METER,
+                    x,
+                    y,
+                    CURVE_SIDES,
+                    r,
                     rotation,
                     MARKING_THICKNESS,
                     sweep,
                     MARKING_COLOR,
-                )
+                );
             }
         }
     }

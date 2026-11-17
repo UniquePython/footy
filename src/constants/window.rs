@@ -21,7 +21,4 @@ const CHECK_VERTICAL_PIXELS_PER_METER: f32 = PITCH_DRAWING_HEIGHT / PITCH_HEIGHT
 const _: () = assert!(CHECK_HORIZONTAL_PIXELS_PER_METER == PIXELS_PER_METER);
 const _: () = assert!(CHECK_VERTICAL_PIXELS_PER_METER == PIXELS_PER_METER);
 
-pub(crate) const WINDOW_CENTER_X: f32 = WINDOW_WIDTH / 2.0; // pixels
-pub(crate) const WINDOW_CENTER_Y: f32 = WINDOW_HEIGHT / 2.0; // pixels
-
 pub(crate) const BG_COLOR: Color = color_u8!(96, 145, 22, 255);

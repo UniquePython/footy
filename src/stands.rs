@@ -1,12 +1,10 @@
 use macroquad::color::Color;
-use macroquad::math::vec2;
 use macroquad::shapes::draw_rectangle;
 
 use crate::constants::{
-    HALF_PITCH_HEIGHT, PIXELS_PER_METER, ROW_DEPTH, SEAT_COLUMNS, SEAT_PITCH, SEAT_SIZE,
-    SEATS_PER_ROW_DEPTH, STAND_BG_COLOR, STAND_DEPTH, STAND_GAP, STAND_ROW_COLOR, WORLD_HALF_WIDTH,
+    HALF_PITCH_HEIGHT, ROW_DEPTH, SEAT_COLUMNS, SEAT_PITCH, SEAT_SIZE, SEATS_PER_ROW_DEPTH,
+    STAND_BG_COLOR, STAND_DEPTH, STAND_GAP, STAND_ROW_COLOR, WORLD_HALF_WIDTH,
 };
-use crate::coords::world_to_screen;
 
 pub(crate) fn draw_stands() {
     draw_stand_side(1.0);
@@ -23,16 +21,15 @@ fn draw_stand_background(sign: f32) {
     let near_edge = HALF_PITCH_HEIGHT + STAND_GAP;
     let far_edge = near_edge + STAND_DEPTH;
 
-    let y_near = sign * near_edge;
-    let y_far = sign * far_edge;
+    let y_bottom = (sign * near_edge).min(sign * far_edge);
 
-    let top_left_world = vec2(-WORLD_HALF_WIDTH, y_near.max(y_far));
-    let screen = world_to_screen(top_left_world);
-
-    let width_px = 2.0 * WORLD_HALF_WIDTH * PIXELS_PER_METER;
-    let height_px = STAND_DEPTH * PIXELS_PER_METER;
-
-    draw_rectangle(screen.x, screen.y, width_px, height_px, STAND_BG_COLOR);
+    draw_rectangle(
+        -WORLD_HALF_WIDTH,
+        y_bottom,
+        2.0 * WORLD_HALF_WIDTH,
+        STAND_DEPTH,
+        STAND_BG_COLOR,
+    );
 }
 
 fn draw_stand_seats(sign: f32) {
@@ -54,10 +51,11 @@ fn draw_stand_seats(sign: f32) {
 fn draw_seat(x_center: f32, y_center: f32, sign: f32, color: Color) {
     let y = sign * y_center;
 
-    let top_left_world = vec2(x_center - SEAT_SIZE / 2.0, y + SEAT_SIZE / 2.0);
-    let screen = world_to_screen(top_left_world);
-
-    let size_px = SEAT_SIZE * PIXELS_PER_METER;
-
-    draw_rectangle(screen.x, screen.y, size_px, size_px, color);
+    draw_rectangle(
+        x_center - SEAT_SIZE / 2.0,
+        y - SEAT_SIZE / 2.0,
+        SEAT_SIZE,
+        SEAT_SIZE,
+        color,
+    );
 }
