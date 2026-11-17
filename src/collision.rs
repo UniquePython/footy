@@ -1,6 +1,10 @@
 use macroquad::math::{Circle, Vec2, vec2};
 
 use crate::ball::Ball;
+use crate::constants::{
+    BALL_WALL_RESTITUTION, PLAYER_BALL_RESTITUTION, PLAYER_WALL_RESTITUTION,
+    WINDOW_HALF_HEIGHT_METERS, WINDOW_HALF_WIDTH_METERS,
+};
 use crate::player::Player;
 
 fn circles_colliding(c1: Circle, c2: Circle) -> bool {
@@ -32,12 +36,12 @@ fn decompose(vec: Vec2, normal: Vec2) -> Component {
     }
 }
 
-fn resolve_velocity(v1: Vec2, m1: f32, v2: Vec2, m2: f32, normal: Vec2) -> (Vec2, Vec2) {
+fn resolve_velocity(v1: Vec2, m1: f32, v2: Vec2, m2: f32, normal: Vec2, e: f32) -> (Vec2, Vec2) {
     let c1 = decompose(v1, normal);
     let c2 = decompose(v2, normal);
 
-    let new_normal1 = ((m1 - m2) * c1.normal + 2.0 * m2 * c2.normal) / (m1 + m2);
-    let new_normal2 = ((m2 - m1) * c2.normal + 2.0 * m1 * c1.normal) / (m1 + m2);
+    let new_normal1 = c1.normal - ((1.0 + e) * m2 * (c1.normal - c2.normal)) / (m1 + m2);
+    let new_normal2 = c2.normal + ((1.0 + e) * m1 * (c1.normal - c2.normal)) / (m1 + m2);
 
     (
         new_normal1 * normal + c1.tangential,
@@ -52,6 +56,7 @@ fn resolve_ball_player_velocity(ball: &mut Ball, player: &mut Player, normal: Ve
         player.velocity,
         player.attributes.mass,
         normal,
+        PLAYER_BALL_RESTITUTION,
     );
 
     ball.velocity = resolved.0;
@@ -109,4 +114,69 @@ pub(crate) fn collide_ball_player(ball: &mut Ball, player: &mut Player) {
 
     resolve_ball_player_velocity(ball, player, normal);
     resolve_ball_player_position(ball, player, normal);
+}
+
+fn bounce_component(position: f32, velocity: f32, limit: f32, radius: f32, e: f32) -> (f32, f32) {
+    let mut position = position;
+    let mut velocity = velocity;
+
+    // Positive boundary
+    if position + radius > limit {
+        if velocity > 0.0 {
+            velocity = -e * velocity;
+        }
+        position = limit - radius;
+    }
+
+    // Negative boundary
+    if position - radius < -limit {
+        if velocity < 0.0 {
+            velocity = -e * velocity;
+        }
+        position = -limit + radius;
+    }
+
+    (position, velocity)
+}
+
+pub(crate) fn collide_ball_wall(ball: &mut Ball) {
+    let x = bounce_component(
+        ball.position.x,
+        ball.velocity.x,
+        WINDOW_HALF_WIDTH_METERS,
+        ball.radius,
+        BALL_WALL_RESTITUTION,
+    );
+
+    let y = bounce_component(
+        ball.position.y,
+        ball.velocity.y,
+        WINDOW_HALF_HEIGHT_METERS,
+        ball.radius,
+        BALL_WALL_RESTITUTION,
+    );
+
+    ball.position = vec2(x.0, y.0);
+    ball.velocity = vec2(x.1, y.1);
+}
+
+pub(crate) fn collide_player_wall(player: &mut Player) {
+    let x = bounce_component(
+        player.position.x,
+        player.velocity.x,
+        WINDOW_HALF_WIDTH_METERS,
+        player.radius,
+        PLAYER_WALL_RESTITUTION,
+    );
+
+    let y = bounce_component(
+        player.position.y,
+        player.velocity.y,
+        WINDOW_HALF_HEIGHT_METERS,
+        player.radius,
+        PLAYER_WALL_RESTITUTION,
+    );
+
+    player.position = vec2(x.0, y.0);
+    player.velocity = vec2(x.1, y.1);
 }

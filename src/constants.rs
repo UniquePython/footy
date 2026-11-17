@@ -13,6 +13,9 @@ pub(crate) const PITCH_DRAWING_HEIGHT: f32 = WINDOW_HEIGHT - PADDING_ALONG_AXIS;
 pub(crate) const WINDOW_CENTER_X: f32 = WINDOW_WIDTH / 2.0; // pixels
 pub(crate) const WINDOW_CENTER_Y: f32 = WINDOW_HEIGHT / 2.0; // pixels
 
+pub(crate) const WINDOW_HALF_WIDTH_METERS: f32 = WINDOW_CENTER_X / PIXELS_PER_METER; // meters
+pub(crate) const WINDOW_HALF_HEIGHT_METERS: f32 = WINDOW_CENTER_Y / PIXELS_PER_METER; // meters
+
 pub(crate) const PITCH_WIDTH: f32 = 105.0; // meters
 pub(crate) const PITCH_HEIGHT: f32 = 70.0; // meters
 
@@ -55,3 +58,7 @@ const PLAYER_TO_BALL_PHYSICS_RADIUS_RATIO: f32 = PLAYER_PHYSICS_RADIUS / BALL_PH
 
 pub(crate) const PLAYER_RENDER_RADIUS: f32 =
     BALL_RENDER_RADIUS * PLAYER_TO_BALL_PHYSICS_RADIUS_RATIO; // pixels
+
+pub(crate) const PLAYER_WALL_RESTITUTION: f32 = 0.3;
+pub(crate) const BALL_WALL_RESTITUTION: f32 = 0.85; // FIFA rigid-surface bounce spec (0.82–0.88 range)
+pub(crate) const PLAYER_BALL_RESTITUTION: f32 = 0.75; // approximates passive ball-to-body impact research

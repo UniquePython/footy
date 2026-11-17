@@ -4,7 +4,7 @@ use macroquad::window::{clear_background, next_frame};
 
 use crate::attributes::Attributes;
 use crate::ball::Ball;
-use crate::collision::collide_ball_player;
+use crate::collision::{collide_ball_player, collide_ball_wall, collide_player_wall};
 use crate::constants::BG_COLOR;
 use crate::controller::HumanController;
 use crate::drawing::draw;
@@ -34,6 +34,8 @@ pub async fn run() {
         player.update(dt);
 
         collide_ball_player(&mut ball, &mut player);
+        collide_ball_wall(&mut ball);
+        collide_player_wall(&mut player);
 
         clear_background(BG_COLOR);
         draw(&ball, &player);
