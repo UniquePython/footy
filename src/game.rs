@@ -20,7 +20,8 @@ pub async fn run() {
         Attributes {
             pace: 80,
             acceleration: 80,
-            mass: 75.0,
+            mass: 74.52,
+            height: height!(5 feet 11 inches),
         },
         Box::new(HumanController::new(Bindings::standard())),
     ); // stub data

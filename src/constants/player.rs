@@ -6,6 +6,21 @@ pub(crate) const MAX_SPEED: f32 = 9.5; // m/s
 pub(crate) const MIN_ACCELERATION: f32 = 2.5; // m/s^2
 pub(crate) const MAX_ACCELERATION: f32 = 6.0; // m/s^2
 
+// Reference body: the MIN/MAX speed and acceleration above describe this player.
+// Height and BMI deviations from it scale those ranges (see attributes.rs).
+pub(crate) const REF_HEIGHT: f32 = 1.80; // meters
+pub(crate) const REF_BMI: f32 = 23.0; // kg/m^2
+
+// Deviation that counts as "fully tall/short" or "fully heavy"; beyond this, no extra effect.
+pub(crate) const HEIGHT_SPAN: f32 = 0.20; // meters
+pub(crate) const BMI_SPAN: f32 = 5.0; // kg/m^2
+
+// Max fractional effect on the speed/acceleration ranges, at full height_t / mass_t.
+pub(crate) const K_HEIGHT_SPEED: f32 = 0.04; // taller: higher top speed (stride)
+pub(crate) const K_HEIGHT_ACCEL: f32 = 0.06; // taller: slower to get going
+pub(crate) const K_MASS_SPEED: f32 = 0.05; // heavier for height: slower
+pub(crate) const K_MASS_ACCEL: f32 = 0.08; // heavier for height: slower to get going
+
 // Facing is an angular offset from the player's movement direction, steered by
 // holding left/right. Turning in is slower and deliberate; returning to center
 // on release is faster, so aim resets decisively.
