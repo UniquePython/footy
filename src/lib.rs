@@ -7,6 +7,7 @@ mod constants;
 mod controller;
 mod drawing;
 mod environment;
+mod facing_turn;
 mod game;
 mod input;
 mod physics_simulator;
