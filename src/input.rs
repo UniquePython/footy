@@ -12,10 +12,12 @@ impl Bindings {
     // WASD and arrow keys both work
     pub(crate) fn standard() -> Self {
         let keys = HashMap::from([
-            (Action::MoveUp, vec![KeyCode::W, KeyCode::Up]),
-            (Action::MoveDown, vec![KeyCode::S, KeyCode::Down]),
-            (Action::MoveLeft, vec![KeyCode::A, KeyCode::Left]),
-            (Action::MoveRight, vec![KeyCode::D, KeyCode::Right]),
+            (Action::MoveUp, vec![KeyCode::Up]),
+            (Action::MoveDown, vec![KeyCode::Down]),
+            (Action::MoveLeft, vec![KeyCode::Left]),
+            (Action::MoveRight, vec![KeyCode::Right]),
+            (Action::FaceLeft, vec![KeyCode::A]),
+            (Action::FaceRight, vec![KeyCode::D]),
         ]);
 
         Self { keys }
