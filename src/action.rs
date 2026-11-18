@@ -4,4 +4,6 @@ pub(crate) enum Action {
     MoveDown,
     MoveLeft,
     MoveRight,
+    FaceLeft,
+    FaceRight,
 }
